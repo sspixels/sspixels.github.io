@@ -1,1012 +1,513 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#09090b" />
-  <meta name="description" content="SS Pixels builds focused Android apps and games with thoughtful design, privacy-conscious engineering and polished experiences." />
-  <title>SS Pixels — Apps & Games</title>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#eef0f4">
+  <meta name="description" content="SS Pixels is an independent Android studio making focused apps and games: Snakes & Ladders: Kurukshetra, OneBreath, ParkTrace and PartPay UPI.">
+  <title>SS Pixels | Android apps and games</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#08090c;
-      --bg-soft:#0f1116;
-      --card:#12151c;
-      --card-2:#171b23;
-      --text:#f6f7fb;
-      --muted:#a6adbb;
-      --line:rgba(255,255,255,.09);
-      --line-strong:rgba(255,255,255,.16);
-      --shadow:0 24px 80px rgba(0,0,0,.35);
-      --radius:26px;
-      --radius-sm:18px;
-      --max:1180px;
-
-      --kur:#f3b73f;
-      --breath:#84e3ad;
-      --park:#8bd25c;
-      --part:#8d8fff;
+      /* studio */
+      --paper:#eef0f4;
+      --paper-2:#e2e6ee;
+      --ink:#171a24;
+      --ink-soft:#4a5163;
+      --rule:#c9cfdb;
+      /* product colour worlds */
+      --kur-bg:#1c1631; --kur-ink:#f3e9d2; --kur-gold:#e9b949; --kur-snake:#3fa37a; --kur-soft:#b9ad95;
+      --br-bg:#dcefe3;  --br-ink:#12301f;  --br-acc:#2e8b57;
+      --pk-bg:#23281f;  --pk-ink:#e7f2da;  --pk-acc:#9bd65a;
+      --pp-bg:#e4e4fb;  --pp-ink:#1d1c4a;  --pp-acc:#5b5be0;
+      --max:1160px;
+      --wide:"Archivo", ui-sans-serif, system-ui, sans-serif;
     }
-
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
     body{
-      margin:0;
-      min-height:100vh;
-      background:
-        radial-gradient(circle at 12% 8%, rgba(116,90,255,.10), transparent 28%),
-        radial-gradient(circle at 88% 14%, rgba(42,216,165,.08), transparent 25%),
-        var(--bg);
-      color:var(--text);
-      font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin:0; background:var(--paper); color:var(--ink);
+      font-family:var(--wide); font-stretch:100%;
+      font-size:1.0625rem; line-height:1.6;
       -webkit-font-smoothing:antialiased;
-      overflow-x:hidden;
     }
-
-    a{color:inherit;text-decoration:none}
-    button,input{font:inherit}
-    ::selection{background:#fff;color:#111}
-
-    .noise{
-      position:fixed; inset:0; pointer-events:none; z-index:999;
-      opacity:.035;
-      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.4'/%3E%3C/svg%3E");
-    }
-
+    a{color:inherit}
+    a:focus-visible,button:focus-visible{outline:3px solid currentColor; outline-offset:3px; border-radius:4px}
+    h1,h2,h3{font-stretch:125%; font-weight:800; line-height:1.02; letter-spacing:-.02em; margin:0}
+    p{margin:0 0 1em}
     .wrap{width:min(var(--max), calc(100% - 40px)); margin-inline:auto}
-    .section{padding:108px 0}
-    .eyebrow{
-      display:inline-flex; align-items:center; gap:9px;
-      color:#c9cfda; font-size:.76rem; font-weight:800;
-      letter-spacing:.16em; text-transform:uppercase;
-    }
-    .eyebrow::before{
-      content:""; width:26px; height:1px; background:currentColor; opacity:.7;
-    }
-    h1,h2,h3,p{margin-top:0}
-    h1,h2,h3{letter-spacing:-.045em}
-    h1{
-      font-size:clamp(3.6rem, 8.4vw, 7.8rem);
-      line-height:.92;
-      margin-bottom:28px;
-    }
-    h2{font-size:clamp(2.4rem, 5vw, 4.6rem); line-height:1; margin-bottom:20px}
-    h3{font-size:1.45rem; line-height:1.15}
-    p{color:var(--muted); line-height:1.7}
-    .muted{color:var(--muted)}
-    .small{font-size:.9rem}
-    .max-copy{max-width:690px}
-    .grad-text{
-      background:linear-gradient(110deg,#fff 10%,#c5c9d7 46%,#7e8491 95%);
-      -webkit-background-clip:text; background-clip:text; color:transparent;
-    }
+    .skip{position:absolute; left:-999px; top:8px; background:var(--ink); color:var(--paper); padding:8px 12px; z-index:100}
+    .skip:focus{left:8px}
 
-    /* NAV */
-    .nav-shell{
-      position:fixed; top:18px; left:0; right:0; z-index:90;
-      pointer-events:none;
-    }
-    nav{
-      pointer-events:auto;
-      width:min(980px, calc(100% - 28px));
-      margin:auto;
-      display:flex; align-items:center; justify-content:space-between;
-      gap:24px;
-      padding:10px 12px 10px 16px;
-      border:1px solid var(--line);
-      background:rgba(12,13,17,.72);
-      backdrop-filter:blur(20px) saturate(140%);
-      -webkit-backdrop-filter:blur(20px) saturate(140%);
-      border-radius:999px;
-      box-shadow:0 12px 40px rgba(0,0,0,.25);
-    }
-    .brand{display:flex; align-items:center; gap:11px; min-width:max-content}
-    .brandmark{
-      width:34px;height:34px;border-radius:11px;
-      display:grid;place-items:center;
-      font-size:.72rem;font-weight:900;letter-spacing:-.03em;
-      color:#08090c;
-      background:linear-gradient(135deg,#fff,#a5a9b4);
-      box-shadow:inset 0 0 0 1px rgba(255,255,255,.55);
-    }
-    .brandname{font-weight:800;font-size:.92rem;letter-spacing:-.02em}
-    .navlinks{display:flex; align-items:center; gap:4px}
-    .navlinks a{
-      padding:9px 13px; border-radius:999px;
-      color:#cbd0da; font-size:.84rem; font-weight:650;
-      transition:.2s ease;
-    }
-    .navlinks a:hover{background:rgba(255,255,255,.07); color:#fff}
-    .nav-cta{
-      padding:10px 14px !important;
-      background:#fff !important;color:#0b0c0f !important;
-      font-weight:800 !important;
-    }
+    /* ---------- header ---------- */
+    .top{position:sticky; top:0; z-index:50; background:rgba(238,240,244,.92); backdrop-filter:blur(10px); border-bottom:1px solid var(--rule)}
+    .top .wrap{display:flex; align-items:center; justify-content:space-between; gap:24px; height:64px}
+    .brand{display:flex; align-items:center; gap:12px; text-decoration:none; font-weight:800; font-stretch:125%; font-size:1.05rem}
+    .mark{display:grid; grid-template-columns:repeat(2,11px); gap:2px}
+    .mark i{width:11px; height:11px; display:block}
+    .mark i:nth-child(1){background:var(--kur-gold)}
+    .mark i:nth-child(2){background:var(--br-acc)}
+    .mark i:nth-child(3){background:var(--pk-acc)}
+    .mark i:nth-child(4){background:var(--pp-acc)}
+    .top nav{display:flex; gap:4px; flex-wrap:wrap}
+    .top nav a{text-decoration:none; font-size:.92rem; font-weight:600; padding:8px 12px; border-radius:6px; color:var(--ink-soft)}
+    .top nav a:hover{background:var(--paper-2); color:var(--ink)}
 
-    /* HERO */
-    .hero{
-      min-height:100svh;
-      display:flex;align-items:center;
-      padding:148px 0 80px;
-      position:relative;
+    /* ---------- hero ---------- */
+    .hero{padding:88px 0 72px; border-bottom:1px solid var(--rule)}
+    .hero .wrap{display:grid; grid-template-columns:1.15fr .85fr; gap:56px; align-items:center}
+    .hero h1{font-size:clamp(2.7rem, 6.4vw, 5.6rem); font-weight:900}
+    .hero .lede{font-size:1.2rem; color:var(--ink-soft); max-width:34em; margin-top:28px}
+    .mosaic{
+      display:grid; grid-template-columns:repeat(8,1fr); gap:6px;
+      aspect-ratio:1; width:100%; max-width:440px; justify-self:end;
     }
-    .hero-grid{
-      display:grid;grid-template-columns:1.1fr .9fr;
-      align-items:center;gap:52px;
+    .mosaic i{display:block; border-radius:3px; opacity:0; transform:scale(.4); animation:pix .5s cubic-bezier(.2,.9,.3,1.2) forwards}
+    @keyframes pix{to{opacity:1; transform:none}}
+    .k{background:var(--kur-gold)} .k2{background:var(--kur-bg)}
+    .b{background:var(--br-acc)} .b2{background:#9fd3b2}
+    .p{background:var(--pk-acc)} .p2{background:var(--pk-bg)}
+    .u{background:var(--pp-acc)} .u2{background:#b9b9f2}
+    .e{background:transparent !important}
+
+    /* ---------- index of products ---------- */
+    .index{padding:72px 0 80px}
+    .index h2{font-size:clamp(1.9rem,3.4vw,2.8rem); margin-bottom:12px}
+    .index .intro{color:var(--ink-soft); max-width:40em; margin-bottom:36px}
+    .rows{border-top:2px solid var(--ink)}
+    .row{
+      display:grid; grid-template-columns:28px minmax(0,1.1fr) minmax(0,1.6fr) 150px;
+      gap:24px; align-items:center; padding:22px 4px; border-bottom:1px solid var(--rule);
+      text-decoration:none;
     }
-    .hero-copy p{font-size:1.08rem;max-width:640px}
-    .hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+    .row:hover{background:var(--paper-2)}
+    .row .sw{width:22px; height:22px; border-radius:3px}
+    .row strong{display:block; font-stretch:125%; font-weight:800; font-size:1.15rem; line-height:1.2}
+    .row .sub{display:block; color:var(--ink-soft); font-size:.92rem}
+    .row .what{color:var(--ink-soft); font-size:.98rem}
+    .row .cat{font-size:.85rem; font-weight:600; color:var(--ink-soft); text-align:right}
+
+    /* ---------- product bands ---------- */
+    .band{padding:104px 0}
+    .band .wrap{display:grid; grid-template-columns:1.05fr .95fr; gap:72px; align-items:center}
+    .band.flip .wrap{grid-template-columns:.95fr 1.05fr}
+    .band.flip .copy{order:2}
+    .band h2{font-size:clamp(2.3rem,4.8vw,4.2rem); margin:14px 0 22px}
+    .band .tagline{font-size:1.25rem; font-weight:600; margin-bottom:14px}
+    .band .desc{max-width:36em; opacity:.85}
+    .app-line{display:flex; align-items:center; gap:12px; font-weight:700; font-size:.98rem}
+    .app-line .sw{width:16px; height:16px; border-radius:3px}
+    .feats{list-style:none; padding:0; margin:28px 0; display:grid; grid-template-columns:1fr 1fr; gap:10px 28px}
+    .feats li{padding-left:20px; position:relative; font-size:.96rem}
+    .feats li::before{content:""; position:absolute; left:0; top:.55em; width:9px; height:9px; border-radius:2px; background:currentColor; opacity:.55}
+    .facts{display:flex; flex-wrap:wrap; gap:8px; margin-top:8px}
+    .facts span{font-size:.82rem; font-weight:600; padding:6px 10px; border-radius:4px; border:1px solid currentColor; opacity:.75}
+    .note{font-size:.9rem; opacity:.75; margin-top:20px; max-width:36em}
     .btn{
-      display:inline-flex;align-items:center;justify-content:center;gap:10px;
-      min-height:48px;padding:0 18px;border-radius:14px;
-      border:1px solid var(--line-strong);
-      color:#f8f9fb;background:rgba(255,255,255,.03);
-      font-weight:750;font-size:.93rem;
-      transition:transform .2s ease, background .2s ease, border-color .2s ease;
+      display:inline-flex; align-items:center; gap:10px; margin-top:28px;
+      padding:13px 20px; border-radius:6px; font-weight:700; text-decoration:none; font-size:.98rem;
     }
-    .btn:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.28);background:rgba(255,255,255,.07)}
-    .btn.primary{background:#fff;color:#090a0d;border-color:#fff}
-    .btn.primary:hover{background:#e8e9ec}
-    .hero-meta{display:flex;gap:20px;flex-wrap:wrap;margin-top:38px;color:#8e96a5;font-size:.84rem}
-    .hero-meta span{display:flex;align-items:center;gap:8px}
-    .hero-meta i{width:7px;height:7px;border-radius:50%;background:#58d68d;box-shadow:0 0 0 4px rgba(88,214,141,.08)}
 
-    .hero-visual{position:relative;height:620px}
-    .orb{
-      position:absolute;border-radius:50%;filter:blur(16px);opacity:.48;
-      animation:float 7s ease-in-out infinite;
-    }
-    .orb.a{width:260px;height:260px;background:#755dff;right:16%;top:10%}
-    .orb.b{width:220px;height:220px;background:#46d9a6;left:0;bottom:11%;animation-delay:-2s}
-    .device-stack{position:absolute;inset:30px 0 0 0}
+    /* phone mock (shared) */
     .phone{
-      position:absolute;
-      width:246px;height:510px;border-radius:38px;
-      background:#0c0e12;
-      border:1px solid rgba(255,255,255,.13);
-      box-shadow:0 30px 80px rgba(0,0,0,.55);
-      padding:9px;
-      overflow:hidden;
+      width:270px; max-width:100%; aspect-ratio:9/19; margin-inline:auto;
+      border-radius:34px; padding:10px; background:#0d0f14;
+      box-shadow:0 30px 60px rgba(0,0,0,.28);
     }
-    .phone::after{
-      content:"";position:absolute;top:11px;left:50%;transform:translateX(-50%);
-      width:72px;height:19px;border-radius:999px;background:#07080a;z-index:4;
-    }
-    .phone.back{left:5%;top:92px;transform:rotate(-10deg);opacity:.82}
-    .phone.front{right:2%;top:20px;transform:rotate(8deg);z-index:2}
-    .screen{
-      height:100%;border-radius:31px;overflow:hidden;position:relative;
-      background:linear-gradient(180deg,#141824,#090b10);
-    }
-    .screen.onebreath{
-      background:
-       radial-gradient(circle at 50% 55%,rgba(110,242,169,.17),transparent 30%),
-       linear-gradient(180deg,#0d1c19,#07100f 74%);
-    }
-    .screen.kur{
-      background:
-       radial-gradient(circle at 50% 15%,rgba(255,186,52,.18),transparent 32%),
-       linear-gradient(180deg,#24180d,#100c08);
-    }
-    .mock-top{padding:44px 18px 0;color:#d9dee7;font-size:.62rem;display:flex;justify-content:space-between}
-    .mini-title{padding:22px 18px 0;font-weight:800;font-size:1rem}
-    .breath-orb{
-      width:152px;height:152px;border-radius:50%;
-      margin:42px auto 18px;
-      display:grid;place-items:center;
-      background:radial-gradient(circle,#b6ffd2 0 5%,#65d697 7% 8%,rgba(82,210,145,.16) 9% 42%,rgba(82,210,145,.04) 43% 58%,transparent 59%);
-      box-shadow:0 0 48px rgba(89,219,151,.22);
-    }
-    .breath-orb::before{
-      content:"BREATHE";font-size:.61rem;letter-spacing:.22em;font-weight:900;color:#aef4c8;
-    }
-    .tree{
-      width:12px;height:86px;background:linear-gradient(#7adf9d,#3c7c55);
-      margin:4px auto 0;border-radius:999px;position:relative;
-    }
-    .tree::before,.tree::after{
-      content:"";position:absolute;width:76px;height:52px;background:#45b96e;border-radius:70% 30% 65% 35%;
-      top:12px;
-    }
-    .tree::before{right:6px;transform:rotate(-18deg)}
-    .tree::after{left:6px;transform:scaleX(-1) rotate(-18deg)}
-    .tiny-card{
-      margin:28px 14px 0;padding:14px;border-radius:18px;
-      background:rgba(255,255,255,.065);border:1px solid rgba(255,255,255,.08);
-    }
-    .tiny-row{display:flex;justify-content:space-between;color:#a7afb9;font-size:.58rem}
-    .tiny-bar{height:5px;border-radius:999px;background:rgba(255,255,255,.08);margin-top:9px;overflow:hidden}
-    .tiny-bar span{display:block;height:100%;width:70%;background:#7ae2a0;border-radius:inherit}
+    .screen{height:100%; border-radius:26px; overflow:hidden; padding:30px 16px 16px; display:flex; flex-direction:column; gap:12px}
+    .scr-title{font-weight:800; font-stretch:115%; font-size:1.02rem}
+    .scr-sub{font-size:.72rem; opacity:.7; margin-top:-8px}
+    .scr-card{border-radius:12px; padding:11px 12px; font-size:.74rem; line-height:1.4}
+    .scr-card b{display:block; font-size:.78rem; margin-bottom:2px}
+    .scr-btn{border-radius:10px; padding:11px; text-align:center; font-weight:800; font-size:.78rem; margin-top:auto}
 
-    .board{
-      width:178px;height:178px;margin:48px auto 0;border-radius:20px;
-      padding:9px;display:grid;grid-template-columns:repeat(6,1fr);gap:3px;
-      background:rgba(255,255,255,.08);box-shadow:0 10px 30px rgba(0,0,0,.25);
-    }
-    .board span{border-radius:4px;background:rgba(255,255,255,.09)}
-    .board span:nth-child(3n){background:rgba(244,183,63,.31)}
-    .board span:nth-child(4n){background:rgba(208,94,70,.23)}
-    .dice{
-      width:52px;height:52px;border-radius:15px;background:#f2eadc;color:#2b1e0e;
-      display:grid;place-items:center;font-size:1.5rem;margin:24px auto;font-weight:900;
-      box-shadow:0 14px 30px rgba(0,0,0,.22);
-    }
+    /* Kurukshetra */
+    .kur{background:var(--kur-bg); color:var(--kur-ink)}
+    .kur h2{font-family:"Cinzel", Georgia, serif; font-stretch:100%; font-weight:700; letter-spacing:0; line-height:1.08; color:var(--kur-gold)}
+    .kur .app-line .sw{background:var(--kur-gold)}
+    .kur .btn{background:var(--kur-gold); color:#2a1c05}
+    .kur .btn:hover{background:#f3ca6b}
+    .warriors{margin:26px 0 6px; border-top:1px solid rgba(233,185,73,.35)}
+    .warrior{display:grid; grid-template-columns:132px 1fr; gap:16px; padding:11px 0; border-bottom:1px solid rgba(233,185,73,.18); font-size:.95rem}
+    .warrior strong{color:var(--kur-gold); font-weight:700}
+    .warrior span{color:var(--kur-soft)}
+    .kur .screen{background:radial-gradient(circle at 50% 0%, #3a2a17 0%, #160f0a 70%); color:#f3e9d2}
+    .kboard{display:grid; grid-template-columns:repeat(10,1fr); gap:2px; padding:6px; border-radius:8px; background:#3b2b17; border:2px solid var(--kur-gold)}
+    .kboard i{aspect-ratio:1; background:#d9c08a; border-radius:1px}
+    .kboard i.s{background:#3fa37a} .kboard i.r{background:#b8452f} .kboard i.l{background:#e9b949}
+    .kprompt{background:#262b3c; border:1px solid #4a4256; border-radius:14px; padding:12px}
+    .kprompt .ttl{display:flex; justify-content:space-between; font-family:"Cinzel",serif; font-weight:700; color:var(--kur-gold); font-size:.86rem; margin-bottom:9px}
+    .kprompt .ttl span{font-family:var(--wide); color:#fff; font-size:.8rem}
+    .kprompt .use{background:var(--kur-gold); color:#1b1206; border-radius:999px; text-align:center; padding:7px; font-size:.72rem; font-weight:800}
+    .kprompt .use small,.kprompt .cont small{display:block; font-weight:500; opacity:.8}
+    .kprompt .cont{border:1px solid #6a6378; border-radius:999px; text-align:center; padding:7px; font-size:.72rem; font-weight:700; margin-top:7px}
 
-    @keyframes float{50%{transform:translateY(-16px) scale(1.03)}}
-    @keyframes marquee{to{transform:translateX(-50%)}}
+    /* OneBreath */
+    .breath{background:var(--br-bg); color:var(--br-ink)}
+    .breath .app-line .sw{background:var(--br-acc)}
+    .breath .btn{background:var(--br-ink); color:var(--br-bg)}
+    .breath .screen{background:linear-gradient(180deg,#0f241b,#07100c); color:#d8f3e2}
+    .breath .scr-card{background:rgba(255,255,255,.06)}
+    .orb{width:140px; height:140px; margin:14px auto 4px; border-radius:50%; display:grid; place-items:center; font-size:.62rem; font-weight:800; color:#b9f9d1;
+      background:radial-gradient(circle,rgba(132,227,173,.32) 0 30%,rgba(132,227,173,.14) 31% 60%,rgba(132,227,173,.06) 61% 70%,transparent 71%)}
+    .breath .scr-btn{background:#84e3ad; color:#0b2516}
 
-    /* STRIP */
-    .strip{border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;background:rgba(255,255,255,.012)}
-    .strip-track{
-      white-space:nowrap;display:flex;width:max-content;
-      padding:16px 0;animation:marquee 28s linear infinite;
-      color:#818997;text-transform:uppercase;letter-spacing:.14em;font-weight:750;font-size:.74rem;
-    }
-    .strip-track span{padding-right:46px}
-    .strip-track b{color:#dfe3ea}
+    /* ParkTrace */
+    .park{background:var(--pk-bg); color:var(--pk-ink)}
+    .park .app-line .sw{background:var(--pk-acc)}
+    .park .screen{background:linear-gradient(180deg,#182318,#0a0f0a); color:#e7f2da}
+    .park .scr-card{background:rgba(255,255,255,.06)}
+    .radar{width:150px; height:150px; margin:10px auto; border-radius:50%; position:relative; border:1px solid rgba(155,214,90,.35);
+      background:radial-gradient(circle,transparent 29%,rgba(155,214,90,.18) 30% 31%,transparent 32% 59%,rgba(155,214,90,.14) 60% 61%,transparent 62%)}
+    .radar::before{content:""; position:absolute; left:50%; top:50%; width:4px; height:62px; border-radius:4px; background:var(--pk-acc); transform-origin:50% 100%; transform:translate(-50%,-100%) rotate(36deg)}
+    .radar::after{content:""; position:absolute; width:10px; height:10px; border-radius:50%; background:#fff; left:calc(50% - 5px); top:calc(50% - 5px)}
+    .park .scr-btn{background:var(--pk-acc); color:#13220d}
 
-    /* INTRO */
-    .intro-grid{display:grid;grid-template-columns:.72fr 1.28fr;gap:76px;align-items:start}
-    .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:40px}
-    .value{
-      min-height:155px;padding:22px;border:1px solid var(--line);
-      border-radius:20px;background:linear-gradient(180deg,rgba(255,255,255,.032),rgba(255,255,255,.012));
-    }
-    .value .num{font-size:.72rem;color:#7e8694;margin-bottom:40px}
-    .value strong{display:block;font-size:1rem;margin-bottom:7px}
-    .value p{font-size:.82rem;margin-bottom:0;line-height:1.55}
-
-    /* PORTFOLIO GRID */
-    .portfolio-head{display:flex;align-items:end;justify-content:space-between;gap:30px;margin-bottom:34px}
-    .portfolio-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:18px}
-    .product-card{
-      border:1px solid var(--line);border-radius:28px;overflow:hidden;
-      min-height:450px;position:relative;padding:30px;
-      background:var(--card);
-      isolation:isolate;
-    }
-    .product-card:nth-child(3),.product-card:nth-child(4){min-height:390px}
-    .product-card::before{
-      content:"";position:absolute;inset:auto -15% -35% auto;width:360px;height:360px;border-radius:50%;
-      filter:blur(30px);opacity:.13;z-index:-1;
-    }
-    .product-card.kur::before{background:var(--kur)}
-    .product-card.breath::before{background:var(--breath)}
-    .product-card.park::before{background:var(--park)}
-    .product-card.part::before{background:var(--part)}
-    .card-top{display:flex;align-items:center;justify-content:space-between;gap:20px;position:relative;z-index:2}
-    .app-id{display:flex;align-items:center;gap:14px}
-    .app-icon{
-      width:56px;height:56px;border-radius:17px;display:grid;place-items:center;
-      font-weight:900;color:#0b0c0f;border:1px solid rgba(255,255,255,.22);
-      box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);
-    }
-    .app-icon.kur{background:linear-gradient(135deg,#f0c25b,#b66a20)}
-    .app-icon.breath{background:linear-gradient(135deg,#a8f0c1,#45a879)}
-    .app-icon.park{background:linear-gradient(135deg,#b4f179,#65a83d)}
-    .app-icon.part{background:linear-gradient(135deg,#c0c1ff,#7779e9)}
-    .app-icon svg{width:29px;height:29px}
-    .app-name strong{display:block;font-size:1rem}
-    .app-name span{display:block;font-size:.75rem;color:#8e96a4;margin-top:4px}
-    .tag{
-      font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
-      padding:7px 10px;border:1px solid var(--line);border-radius:999px;color:#aab2bf;
-      background:rgba(255,255,255,.025);
-    }
-    .product-card h3{font-size:2.1rem;margin:44px 0 12px;max-width:520px}
-    .product-card p{max-width:530px;font-size:.94rem}
-    .feature-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
-    .feature-pills span{
-      font-size:.73rem;color:#c3cad4;padding:8px 10px;
-      border:1px solid var(--line);background:rgba(255,255,255,.025);
-      border-radius:999px;
-    }
-    .card-art{
-      position:absolute;right:18px;bottom:0;width:42%;height:46%;
-      opacity:.98;pointer-events:none;
-    }
-    .product-card.breath .card-art{right:5px}
-    .art-phone{
-      width:146px;height:292px;border:1px solid rgba(255,255,255,.12);
-      border-radius:26px;background:#090b0e;position:absolute;right:16px;bottom:-42px;
-      transform:rotate(7deg);box-shadow:0 20px 55px rgba(0,0,0,.4);padding:7px;
-    }
-    .art-phone .inner{height:100%;border-radius:20px;background:#10141b;overflow:hidden}
-    .inner.green{background:radial-gradient(circle at 50% 45%,rgba(112,238,164,.18),transparent 25%),#0a1713}
-    .inner.gold{background:radial-gradient(circle at 50% 32%,rgba(241,181,62,.18),transparent 25%),#171008}
-    .inner.park{background:radial-gradient(circle at 50% 58%,rgba(125,206,80,.15),transparent 30%),#0d1410}
-    .inner.part{background:radial-gradient(circle at 50% 30%,rgba(137,140,255,.2),transparent 30%),#10101a}
-    .art-line{height:6px;border-radius:999px;background:rgba(255,255,255,.07);margin:14px 13px}
-    .art-line.short{width:45%}
-    .art-circle{width:76px;height:76px;border-radius:50%;margin:42px auto 26px;border:9px solid rgba(255,255,255,.07)}
-    .inner.green .art-circle{border-color:rgba(113,225,159,.34)}
-    .inner.gold .art-circle{border-color:rgba(237,178,60,.33)}
-    .inner.park .art-circle{border-color:rgba(139,210,92,.32)}
-    .inner.part .art-circle{border-color:rgba(141,143,255,.35)}
-    .art-button{height:31px;border-radius:10px;margin:34px 13px 0;background:rgba(255,255,255,.08)}
-
-    /* PRODUCT SECTIONS */
-    .product-section{padding:128px 0;border-top:1px solid var(--line);position:relative;overflow:hidden}
-    .product-section::before{
-      content:"";position:absolute;width:520px;height:520px;border-radius:50%;filter:blur(110px);
-      opacity:.07;pointer-events:none;
-    }
-    .product-section.kur::before{background:var(--kur);right:-180px;top:60px}
-    .product-section.breath::before{background:var(--breath);left:-180px;top:40px}
-    .product-section.park::before{background:var(--park);right:-170px;top:30px}
-    .product-section.part::before{background:var(--part);left:-180px;top:40px}
-
-    .product-layout{display:grid;grid-template-columns:.95fr 1.05fr;gap:80px;align-items:center}
-    .product-layout.reverse{grid-template-columns:1.05fr .95fr}
-    .product-kicker{display:flex;align-items:center;gap:12px;margin-bottom:18px}
-    .product-kicker .dot{width:10px;height:10px;border-radius:50%}
-    .product-kicker span{font-size:.72rem;font-weight:850;letter-spacing:.13em;text-transform:uppercase;color:#abb2bf}
-    .dot.kur{background:var(--kur);box-shadow:0 0 0 5px rgba(243,183,63,.08)}
-    .dot.breath{background:var(--breath);box-shadow:0 0 0 5px rgba(132,227,173,.08)}
-    .dot.park{background:var(--park);box-shadow:0 0 0 5px rgba(139,210,92,.08)}
-    .dot.part{background:var(--part);box-shadow:0 0 0 5px rgba(141,143,255,.08)}
-    .product-copy h2{font-size:clamp(2.8rem,5.6vw,5.4rem)}
-    .product-copy .tagline{font-size:1.22rem;color:#e3e6ec;margin-bottom:20px}
-    .product-copy .desc{font-size:1rem;max-width:650px}
-    .check-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:28px 0}
-    .check{
-      padding:13px 14px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.02);
-      font-size:.82rem;color:#c4cad4;display:flex;align-items:center;gap:9px;
-    }
-    .check::before{content:"✓";font-weight:900;color:#fff}
-    .meta-row{display:flex;flex-wrap:wrap;gap:9px;margin-top:26px}
-    .meta-row span{
-      padding:8px 10px;border-radius:10px;background:rgba(255,255,255,.045);font-size:.74rem;color:#aeb5c1;
-    }
-
-    .showcase{
-      position:relative;min-height:610px;border-radius:34px;border:1px solid var(--line);
-      background:linear-gradient(160deg,rgba(255,255,255,.045),rgba(255,255,255,.012));
-      overflow:hidden;box-shadow:var(--shadow);
-    }
-    .showcase .glow{position:absolute;width:290px;height:290px;border-radius:50%;filter:blur(60px);opacity:.16}
-    .showcase.kur .glow{background:var(--kur);top:15%;left:15%}
-    .showcase.breath .glow{background:var(--breath);top:16%;left:20%}
-    .showcase.park .glow{background:var(--park);top:15%;right:10%}
-    .showcase.part .glow{background:var(--part);top:10%;left:10%}
-    .show-phone{
-      position:absolute;width:248px;height:514px;background:#090a0e;border:1px solid rgba(255,255,255,.13);
-      border-radius:38px;padding:9px;box-shadow:0 28px 70px rgba(0,0,0,.52);
-    }
-    .show-phone.main{right:45px;top:46px;z-index:3}
-    .show-phone.side{left:30px;top:118px;transform:rotate(-7deg) scale(.86);opacity:.75}
-    .show-phone .ui{height:100%;border-radius:30px;overflow:hidden;position:relative}
-    .ui.gold{background:linear-gradient(180deg,#211609,#0c0906)}
-    .ui.green{background:linear-gradient(180deg,#0f241b,#07100c)}
-    .ui.park{background:linear-gradient(180deg,#182318,#0a0f0a)}
-    .ui.part{background:linear-gradient(180deg,#17172a,#0b0b12)}
-    .status{height:40px;padding:15px 16px 0;font-size:.58rem;color:#b7bdc7;display:flex;justify-content:space-between}
-    .ui-title{padding:13px 17px 0;font-size:1.06rem;font-weight:820}
-    .ui-sub{padding:5px 17px 0;font-size:.62rem;color:#89919e}
-    .ui-card{margin:18px 14px;padding:14px;border-radius:17px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.045)}
-    .ui-card strong{font-size:.72rem}
-    .ui-card p{font-size:.58rem;line-height:1.45;margin:5px 0 0;color:#9199a6}
-    .ui-btn{margin:12px 14px 0;height:40px;border-radius:12px;display:grid;place-items:center;font-size:.67rem;font-weight:850}
-    .ui.gold .ui-btn{background:var(--kur);color:#291b06}
-    .ui.green .ui-btn{background:var(--breath);color:#0b2516}
-    .ui.park .ui-btn{background:var(--park);color:#13220d}
-    .ui.part .ui-btn{background:var(--part);color:#101022}
-
-    /* specific mock details */
-    .mini-board{margin:34px auto 18px;width:164px;height:164px;display:grid;grid-template-columns:repeat(5,1fr);gap:3px;padding:7px;border-radius:15px;background:rgba(255,255,255,.06)}
-    .mini-board b{border-radius:4px;background:rgba(255,255,255,.08)}
-    .mini-board b:nth-child(4n){background:rgba(243,183,63,.32)}
-    .mini-board b:nth-child(7n){background:rgba(190,75,53,.26)}
-    .breath-core{width:150px;height:150px;border-radius:50%;margin:48px auto 8px;display:grid;place-items:center;background:radial-gradient(circle,#b9ffd3 0 4%,#76daa0 5% 7%,rgba(132,227,173,.18) 8% 45%,transparent 46%);box-shadow:0 0 70px rgba(132,227,173,.15)}
-    .breath-core span{font-size:.58rem;letter-spacing:.18em;font-weight:900;color:#b9f9d1}
-    .plant-stage{display:flex;justify-content:center;gap:7px;margin-top:30px}
-    .plant-stage i{width:30px;height:42px;border-radius:14px;background:rgba(132,227,173,.08);border:1px solid rgba(132,227,173,.15)}
-    .plant-stage i:nth-child(2){height:52px;margin-top:-10px;background:rgba(132,227,173,.13)}
-    .plant-stage i:nth-child(3){height:64px;margin-top:-22px;background:rgba(132,227,173,.18)}
-    .radar{
-      width:170px;height:170px;margin:48px auto 12px;border-radius:50%;position:relative;
-      border:1px solid rgba(139,210,92,.22);
-      background:
-        radial-gradient(circle,transparent 29%,rgba(139,210,92,.13) 30% 31%,transparent 32% 59%,rgba(139,210,92,.10) 60% 61%,transparent 62%),
-        linear-gradient(90deg,transparent 49.5%,rgba(139,210,92,.12) 50%,transparent 50.5%),
-        linear-gradient(0deg,transparent 49.5%,rgba(139,210,92,.12) 50%,transparent 50.5%);
-    }
-    .radar::before{
-      content:"";position:absolute;left:50%;top:50%;width:4px;height:70px;border-radius:999px;background:var(--park);
-      transform-origin:50% 100%;transform:translate(-50%,-100%) rotate(36deg);
-      box-shadow:0 0 16px rgba(139,210,92,.4)
-    }
-    .radar::after{content:"";position:absolute;width:10px;height:10px;border-radius:50%;background:#fff;left:calc(50% - 5px);top:calc(50% - 5px)}
-    .pay-progress{margin:36px 16px 0}
-    .pay-progress .sum{font-size:1.65rem;font-weight:900}
-    .pay-progress .sum small{font-size:.66rem;color:#8f95a2;display:block;margin-bottom:5px}
-    .steps{margin:25px 14px 0;display:grid;gap:9px}
-    .step{display:flex;align-items:center;justify-content:space-between;padding:12px;border-radius:14px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.065)}
-    .step span{font-size:.66rem;color:#b7bdc8}
-    .step strong{font-size:.68rem}
+    /* PartPay */
+    .part{background:var(--pp-bg); color:var(--pp-ink)}
+    .part .app-line .sw{background:var(--pp-acc)}
+    .part .screen{background:linear-gradient(180deg,#17172a,#0b0b12); color:#e6e6ff}
+    .steps{display:grid; gap:7px}
+    .step{display:flex; justify-content:space-between; padding:10px 11px; border-radius:10px; background:rgba(255,255,255,.06); font-size:.72rem}
     .step.locked{opacity:.45}
+    .part .scr-btn{background:#8d8fff; color:#101022}
 
-    /* PRINCIPLES */
-    .principles{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:#0b0d11}
-    .principle-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:70px}
-    .principle-list{display:grid;gap:12px}
-    .principle{
-      padding:20px 22px;border:1px solid var(--line);border-radius:18px;
-      display:grid;grid-template-columns:40px 1fr;gap:12px;background:rgba(255,255,255,.02)
+    /* ---------- principles ---------- */
+    .principles{padding:96px 0; border-top:1px solid var(--rule)}
+    .principles .wrap{display:grid; grid-template-columns:.8fr 1.2fr; gap:64px}
+    .principles h2{font-size:clamp(2rem,3.8vw,3.2rem); margin-bottom:16px}
+    .principles .side p{color:var(--ink-soft)}
+    .plist{list-style:none; margin:0; padding:0; border-top:2px solid var(--ink)}
+    .plist li{display:grid; grid-template-columns:28px 1fr; gap:16px; padding:22px 0; border-bottom:1px solid var(--rule)}
+    .plist .px{width:12px; height:12px; margin-top:7px; background:var(--ink); border-radius:2px}
+    .plist strong{font-stretch:125%; font-weight:800; font-size:1.08rem; display:block; margin-bottom:4px}
+    .plist p{color:var(--ink-soft); margin:0}
+
+    /* ---------- footer ---------- */
+    footer{background:var(--ink); color:#c9cdd8; padding:56px 0 40px}
+    footer .wrap{display:grid; grid-template-columns:1.2fr 1fr 1fr; gap:40px}
+    footer .brand{color:#fff}
+    footer h3{font-size:.95rem; color:#fff; margin-bottom:12px; font-stretch:115%}
+    footer ul{list-style:none; margin:0; padding:0; display:grid; gap:8px}
+    footer a{text-decoration:none; color:#c9cdd8; font-size:.94rem}
+    footer a:hover{color:#fff; text-decoration:underline}
+    footer .fine{grid-column:1/-1; border-top:1px solid #2e3343; padding-top:20px; font-size:.85rem; color:#8c93a3}
+
+    /* ---------- responsive ---------- */
+    @media (max-width:900px){
+      .hero .wrap,.band .wrap,.band.flip .wrap,.principles .wrap{grid-template-columns:1fr}
+      .band.flip .copy{order:0}
+      .mosaic{justify-self:start; max-width:320px}
+      .row{grid-template-columns:22px 1fr; gap:6px 16px}
+      .row .what,.row .cat{grid-column:2; text-align:left}
+      footer .wrap{grid-template-columns:1fr 1fr}
+      footer .brandcol{grid-column:1/-1}
+      .top nav a.app{display:none}
     }
-    .principle .ico{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.05);font-size:.9rem}
-    .principle strong{font-size:.95rem}
-    .principle p{font-size:.8rem;margin:5px 0 0;line-height:1.5}
-
-    /* CTA/FOOTER */
-    .closing{text-align:center;padding:140px 0 100px}
-    .closing .logo-big{width:78px;height:78px;margin:0 auto 25px;border-radius:24px;display:grid;place-items:center;background:linear-gradient(135deg,#fff,#989da8);color:#090a0d;font-weight:950;letter-spacing:-.05em;box-shadow:0 16px 50px rgba(255,255,255,.08)}
-    .closing h2{max-width:840px;margin-inline:auto}
-    .closing p{max-width:610px;margin-inline:auto}
-    footer{border-top:1px solid var(--line);padding:30px 0 40px}
-    .footer-row{display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:wrap}
-    .footer-links{display:flex;gap:18px;flex-wrap:wrap}
-    .footer-links a{font-size:.8rem;color:#939ba8}
-    .footer-links a:hover{color:#fff}
-
-    /* reveal */
-    .reveal{opacity:0;transform:translateY(22px);transition:opacity .75s ease,transform .75s cubic-bezier(.22,.8,.24,1)}
-    .reveal.in{opacity:1;transform:none}
-
-    @media (max-width:980px){
-      .hero-grid,.intro-grid,.product-layout,.product-layout.reverse,.principle-grid{grid-template-columns:1fr}
-      .hero{padding-top:130px}
-      .hero-visual{height:560px;max-width:560px;width:100%;margin:auto}
-      .portfolio-grid{grid-template-columns:1fr}
-      .product-card{min-height:420px}
-      .product-layout{gap:48px}
-      .showcase{max-width:700px;width:100%;margin:auto}
-      .navlinks a:not(.nav-cta){display:none}
-      .values{grid-template-columns:1fr 1fr 1fr}
+    @media (max-width:560px){
+      .wrap{width:calc(100% - 28px)}
+      .hero{padding:56px 0 48px}
+      .band{padding:72px 0}
+      .feats{grid-template-columns:1fr}
+      .warrior{grid-template-columns:1fr; gap:2px}
+      footer .wrap{grid-template-columns:1fr}
     }
-
-    @media (max-width:640px){
-      .wrap{width:min(var(--max),calc(100% - 24px))}
-      .section,.product-section{padding:82px 0}
-      nav{top:10px}
-      h1{font-size:clamp(3.1rem,16vw,4.8rem)}
-      h2{font-size:clamp(2.4rem,11vw,3.6rem)}
-      .hero{padding-top:112px}
-      .hero-grid{gap:32px}
-      .hero-visual{height:480px}
-      .phone{width:190px;height:402px;border-radius:30px}
-      .phone::after{width:54px;height:15px}
-      .phone.back{left:0;top:72px}
-      .phone.front{right:0;top:12px}
-      .screen{border-radius:24px}
-      .breath-orb{width:115px;height:115px;margin-top:32px}
-      .board{width:137px;height:137px;margin-top:33px}
-      .dice{width:43px;height:43px;margin-top:17px}
-      .values{grid-template-columns:1fr}
-      .portfolio-head{align-items:start;flex-direction:column}
-      .product-card{padding:22px;min-height:465px}
-      .product-card:nth-child(3),.product-card:nth-child(4){min-height:430px}
-      .product-card h3{font-size:1.65rem;margin-top:34px;max-width:80%}
-      .card-art{width:55%;height:44%}
-      .check-grid{grid-template-columns:1fr}
-      .showcase{min-height:530px}
-      .show-phone{width:205px;height:428px;border-radius:31px}
-      .show-phone.main{right:16px;top:46px}
-      .show-phone.side{left:-12px;top:105px}
-      .show-phone .ui{border-radius:24px}
-      .mini-board{width:140px;height:140px;margin-top:26px}
-      .breath-core{width:125px;height:125px;margin-top:35px}
-      .radar{width:140px;height:140px;margin-top:35px}
-      .hero-actions .btn{flex:1}
-      .closing{padding:100px 0 76px}
-    }
-
     @media (prefers-reduced-motion:reduce){
-      *{scroll-behavior:auto!important}
-      .orb,.strip-track{animation:none}
-      .reveal{opacity:1;transform:none;transition:none}
+      html{scroll-behavior:auto}
+      .mosaic i{animation:none; opacity:1; transform:none}
     }
   </style>
 </head>
-
 <body>
-  <div class="noise"></div>
+  <a class="skip" href="#main">Skip to content</a>
 
-  <div class="nav-shell">
-    <nav>
+  <header class="top">
+    <div class="wrap">
       <a class="brand" href="#top" aria-label="SS Pixels home">
-        <span class="brandmark">SS</span>
-        <span class="brandname">SS Pixels</span>
+        <span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        SS Pixels
       </a>
-      <div class="navlinks">
-        <a href="#work">Apps & Game</a>
-        <a href="#principles">Principles</a>
-        <a class="nav-cta" href="#contact">Explore SS Pixels</a>
-      </div>
-    </nav>
-  </div>
-
-  <main id="top">
-    <section class="hero">
-      <div class="wrap hero-grid">
-        <div class="hero-copy reveal">
-          <span class="eyebrow">Independent Android Studio</span>
-          <h1><span class="grad-text">Focused ideas.</span><br>Distinct experiences.</h1>
-          <p>
-            SS Pixels builds polished mobile experiences around simple ideas:
-            play better, breathe mindfully, find your car, and make everyday payments easier to manage.
-          </p>
-          <div class="hero-actions">
-            <a class="btn primary" href="#work">View our work <span>↘</span></a>
-            <a class="btn" href="#principles">How we build</a>
-          </div>
-          <div class="hero-meta">
-            <span><i></i> Android first</span>
-            <span>Independent studio</span>
-            <span>Privacy-conscious by design</span>
-          </div>
-        </div>
-
-        <div class="hero-visual reveal" aria-hidden="true">
-          <div class="orb a"></div><div class="orb b"></div>
-          <div class="device-stack">
-            <div class="phone back">
-              <div class="screen kur">
-                <div class="mock-top"><span>9:41</span><span>● ● ●</span></div>
-                <div class="mini-title">Kurukshetra</div>
-                <div class="board">
-                  <span></span><span></span><span></span><span></span><span></span><span></span>
-                  <span></span><span></span><span></span><span></span><span></span><span></span>
-                  <span></span><span></span><span></span><span></span><span></span><span></span>
-                  <span></span><span></span><span></span><span></span><span></span><span></span>
-                  <span></span><span></span><span></span><span></span><span></span><span></span>
-                  <span></span><span></span><span></span><span></span><span></span><span></span>
-                </div>
-                <div class="dice">⚄</div>
-              </div>
-            </div>
-            <div class="phone front">
-              <div class="screen onebreath">
-                <div class="mock-top"><span>9:41</span><span>● ● ●</span></div>
-                <div class="mini-title">OneBreath</div>
-                <div class="breath-orb"></div>
-                <div class="tree"></div>
-                <div class="tiny-card">
-                  <div class="tiny-row"><span>Today's practice</span><span>7 min</span></div>
-                  <div class="tiny-bar"><span></span></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <div class="strip" aria-hidden="true">
-      <div class="strip-track">
-        <span><b>SS Pixels</b> · Android apps · mindful design · casual games · utility tools · privacy-conscious products · Kotlin · Jetpack Compose ·</span>
-        <span><b>SS Pixels</b> · Android apps · mindful design · casual games · utility tools · privacy-conscious products · Kotlin · Jetpack Compose ·</span>
-      </div>
+      <nav aria-label="Main">
+        <a class="app" href="#kurukshetra">Kurukshetra</a>
+        <a class="app" href="#onebreath">OneBreath</a>
+        <a class="app" href="#parktrace">ParkTrace</a>
+        <a class="app" href="#partpay">PartPay</a>
+        <a href="#principles">How we build</a>
+      </nav>
     </div>
+  </header>
 
-    <section class="section">
-      <div class="wrap intro-grid">
-        <div class="reveal">
-          <span class="eyebrow">About the studio</span>
-        </div>
-        <div class="reveal">
-          <h2>We build apps that do one thing <span class="grad-text">clearly.</span></h2>
-          <p class="max-copy">
-            SS Pixels is an independent mobile studio creating focused Android apps and games.
-            The goal is straightforward: thoughtful interfaces, useful features, responsible data choices,
-            and enough personality that the product feels memorable instead of generic.
-          </p>
-
-          <div class="values">
-            <div class="value">
-              <div class="num">01</div>
-              <strong>Purposeful</strong>
-              <p>Each product starts with a clear user problem or experience.</p>
-            </div>
-            <div class="value">
-              <div class="num">02</div>
-              <strong>Polished</strong>
-              <p>Modern Android UI with attention to motion, hierarchy and feel.</p>
-            </div>
-            <div class="value">
-              <div class="num">03</div>
-              <strong>Respectful</strong>
-              <p>We avoid collecting data a product does not need to function.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="work">
+  <main id="main">
+    <section class="hero" id="top">
       <div class="wrap">
-        <div class="portfolio-head reveal">
-          <div>
-            <span class="eyebrow">Selected work</span>
-            <h2 style="margin-top:16px;margin-bottom:0">Four products.<br>Four different jobs.</h2>
-          </div>
-          <p class="small" style="max-width:330px;margin-bottom:8px">
-            From real-time multiplayer to mindful breathing and everyday utilities.
-          </p>
+        <div>
+          <h1>Focused ideas. Distinct experiences.</h1>
+          <p class="lede">SS Pixels builds polished mobile experiences around simple ideas: play better, breathe mindfully, find your car, and make everyday payments easier to manage.</p>
         </div>
+        <div class="mosaic" id="mosaic" aria-hidden="true"></div>
+      </div>
+    </section>
 
-        <div class="portfolio-grid">
-          <article class="product-card kur reveal">
-            <div class="card-top">
-              <div class="app-id">
-                <div class="app-icon kur" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 19 19 5M7 5h4v4H7zM13 15h4v4h-4z"/><path d="M5 13h4v4H5zM15 7h4v4h-4z"/></svg>
-                </div>
-                <div class="app-name"><strong>Snakes & Ladders</strong><span>Kurukshetra</span></div>
-              </div>
-              <span class="tag">Game</span>
-            </div>
-            <h3>Classic board play, rebuilt for modern Android.</h3>
-            <p>Epic Kurukshetra styling, secure online matchmaking, offline local play, AI opponents and Google Play Games integration.</p>
-            <div class="feature-pills">
-              <span>Online multiplayer</span><span>Offline + AI</span><span>Achievements</span>
-            </div>
-            <div class="card-art" aria-hidden="true">
-              <div class="art-phone"><div class="inner gold"><div class="art-line short"></div><div class="art-circle"></div><div class="art-line"></div><div class="art-button"></div></div></div>
-            </div>
-          </article>
-
-          <article class="product-card breath reveal">
-            <div class="card-top">
-              <div class="app-id">
-                <div class="app-icon breath" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1"><path d="M12 21V8"/><path d="M12 12c-4 0-7-2-7-6 4 0 7 2 7 6Z"/><path d="M12 15c4 0 7-2 7-6-4 0-7 2-7 6Z"/></svg>
-                </div>
-                <div class="app-name"><strong>OneBreath</strong><span>Mindful Minutes</span></div>
-              </div>
-              <span class="tag">Health & Fitness</span>
-            </div>
-            <h3>Breathe. Grow. Begin again.</h3>
-            <p>A mindful breathing experience where every session contributes to visible growth—from seed to flourishing tree.</p>
-            <div class="feature-pills">
-              <span>Guided breathing</span><span>Tree growth</span><span>Local progress</span>
-            </div>
-            <div class="card-art" aria-hidden="true">
-              <div class="art-phone"><div class="inner green"><div class="art-line short"></div><div class="art-circle"></div><div class="art-line"></div><div class="art-button"></div></div></div>
-            </div>
-          </article>
-
-          <article class="product-card park reveal">
-            <div class="card-top">
-              <div class="app-id">
-                <div class="app-icon park" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1"><path d="M12 22s7-6 7-13A7 7 0 1 0 5 9c0 7 7 13 7 13Z"/><circle cx="12" cy="9" r="2.3"/></svg>
-                </div>
-                <div class="app-name"><strong>ParkTrace</strong><span>Find Your Way</span></div>
-              </div>
-              <span class="tag">Utility</span>
-            </div>
-            <h3>Park. Save. Find your way back.</h3>
-            <p>Save your parking spot, add useful details, then return with map and radar-style directional guidance.</p>
-            <div class="feature-pills">
-              <span>GPS parking</span><span>Radar guidance</span><span>History</span>
-            </div>
-            <div class="card-art" aria-hidden="true">
-              <div class="art-phone"><div class="inner park"><div class="art-line short"></div><div class="art-circle"></div><div class="art-line"></div><div class="art-button"></div></div></div>
-            </div>
-          </article>
-
-          <article class="product-card part reveal">
-            <div class="card-top">
-              <div class="app-id">
-                <div class="app-icon part" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1"><path d="M7 5h10M7 12h10M7 19h10"/><circle cx="4" cy="5" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="19" r="1"/></svg>
-                </div>
-                <div class="app-name"><strong>PartPay UPI</strong><span>Split & Pay</span></div>
-              </div>
-              <span class="tag">Finance Utility</span>
-            </div>
-            <h3>Turn one large payment into a clear sequence.</h3>
-            <p>PartPay creates sequential payment parts, opens the user's chosen UPI app, and locally tracks what the user records.</p>
-            <div class="feature-pills">
-              <span>Up to ₹1,999 / part</span><span>No account</span><span>Local-only plan data</span>
-            </div>
-            <div class="card-art" aria-hidden="true">
-              <div class="art-phone"><div class="inner part"><div class="art-line short"></div><div class="art-circle"></div><div class="art-line"></div><div class="art-button"></div></div></div>
-            </div>
-          </article>
+    <section class="index" aria-labelledby="work-title">
+      <div class="wrap">
+        <h2 id="work-title">Four products. Four different jobs.</h2>
+        <p class="intro">SS Pixels is an independent mobile studio creating focused Android apps and games: thoughtful interfaces, useful features, responsible data choices, and enough personality that each product feels memorable instead of generic.</p>
+        <div class="rows">
+          <a class="row" href="#kurukshetra">
+            <span class="sw" style="background:var(--kur-gold)"></span>
+            <span><strong>Snakes &amp; Ladders: Kurukshetra</strong><span class="sub">Board game</span></span>
+            <span class="what">The classic board game on the battlefield of the Mahabharata, with warrior abilities and live online battles.</span>
+            <span class="cat">Game</span>
+          </a>
+          <a class="row" href="#onebreath">
+            <span class="sw" style="background:var(--br-acc)"></span>
+            <span><strong>OneBreath</strong><span class="sub">Mindful Minutes</span></span>
+            <span class="what">A mindful breathing experience where every session contributes to visible growth, from seed to flourishing tree.</span>
+            <span class="cat">Health &amp; Fitness</span>
+          </a>
+          <a class="row" href="#parktrace">
+            <span class="sw" style="background:var(--pk-acc)"></span>
+            <span><strong>ParkTrace</strong><span class="sub">Find Your Way</span></span>
+            <span class="what">Save your parking spot, add useful details, then return with map and radar-style directional guidance.</span>
+            <span class="cat">Utility</span>
+          </a>
+          <a class="row" href="#partpay">
+            <span class="sw" style="background:var(--pp-acc)"></span>
+            <span><strong>PartPay UPI</strong><span class="sub">Split &amp; Pay</span></span>
+            <span class="what">PartPay creates sequential payment parts, opens the user's chosen UPI app, and locally tracks what the user records.</span>
+            <span class="cat">Finance Utility</span>
+          </a>
         </div>
       </div>
     </section>
 
-    <!-- SNAKES & LADDERS -->
-    <section class="product-section kur" id="kurukshetra">
-      <div class="wrap product-layout">
-        <div class="product-copy reveal">
-          <div class="product-kicker"><span class="dot kur"></span><span>Snakes & Ladders: Kurukshetra</span></div>
-          <h2>Ancient rivalry.<br>Modern multiplayer.</h2>
-          <p class="tagline">The familiar board game—made bigger, faster and connected.</p>
-          <p class="desc">
-            A feature-rich reimagining of Snakes & Ladders with a Kurukshetra-inspired visual identity.
-            Players can jump into real-time online matchmaking, play locally with friends, or challenge AI without an internet connection.
-          </p>
-          <div class="check-grid">
-            <div class="check">Real-time global matchmaking</div>
-            <div class="check">Offline local multiplayer</div>
-            <div class="check">AI opponent mode</div>
-            <div class="check">Google Play achievements & leaderboards</div>
-            <div class="check">Firebase Authentication</div>
-            <div class="check">Play Integrity via App Check</div>
+    <!-- SNAKES & LADDERS: KURUKSHETRA -->
+    <section class="band kur" id="kurukshetra" aria-labelledby="kur-title">
+      <div class="wrap">
+        <div class="copy">
+          <div class="app-line"><span class="sw"></span>Snakes &amp; Ladders: Kurukshetra</div>
+          <h2 id="kur-title">Every roll is a battle for Moksha.</h2>
+          <p class="tagline">Snakes and ladders, reimagined on the battlefield of Kurukshetra.</p>
+          <p class="desc">Choose a Pandava warrior, race across an ancient board of divine ladders and Naga serpents, and reach square 100 first. Each warrior carries one ability per match, so the board rewards a well-timed decision as well as a lucky roll.</p>
+
+          <div class="warriors" role="list" aria-label="Warriors and their abilities">
+            <div class="warrior" role="listitem"><strong>Arjuna</strong><span>Archer's Precision: move one square fewer to dodge a snake or reach a ladder.</span></div>
+            <div class="warrior" role="listitem"><strong>Yudhishthira</strong><span>Dharma's Second Throw: landing on a snake? Throw again.</span></div>
+            <div class="warrior" role="listitem"><strong>Sahadeva</strong><span>Foresight: see the trap coming and stay where you are.</span></div>
+            <div class="warrior" role="listitem"><strong>Bhima</strong><span>Iron Body: slide only half a snake's length.</span></div>
+            <div class="warrior" role="listitem"><strong>Nakula</strong><span>Swift Recovery: take the snake, but your next roll moves two extra squares.</span></div>
           </div>
-          <div class="meta-row">
-            <span>Kotlin</span><span>Jetpack Compose</span><span>Firebase</span><span>KSP</span><span>R8 optimized</span>
-          </div>
+
+          <ul class="feats">
+            <li>Online battles against real players, with dice rolled on the server for fair play</li>
+            <li>Local Quest: pass and play for up to 5 players on one phone</li>
+            <li>Face the Asura, a Naga Master the first snake won't bite</li>
+            <li>Earn Karma online and unlock legendary warriors</li>
+            <li>Google Play Games sign-in, achievements and leaderboards</li>
+            <li>My Journey: your battle history and stats</li>
+          </ul>
+          <div class="facts"><span>Free with ads</span><span>Optional in-app purchases</span><span>Progress saved with Play Games</span></div>
+          <a class="btn" href="https://play.google.com/store/apps/details?id=com.sspixels.kurukshetra" target="_blank" rel="noopener">Get it on Google Play</a>
         </div>
 
-        <div class="showcase kur reveal" aria-label="Kurukshetra app mockup">
-          <div class="glow"></div>
-          <div class="show-phone side"><div class="ui gold">
-            <div class="status"><span>9:41</span><span>● ● ●</span></div>
-            <div class="ui-title">Choose your mode</div>
-            <div class="ui-card"><strong>Online Match</strong><p>Find an opponent and play in real time.</p></div>
-            <div class="ui-card"><strong>Offline Play</strong><p>Local multiplayer or AI — no internet needed.</p></div>
-            <div class="ui-btn">Play now</div>
-          </div></div>
-          <div class="show-phone main"><div class="ui gold">
-            <div class="status"><span>9:41</span><span>● ● ●</span></div>
-            <div class="ui-title">Battle of Kurukshetra</div>
-            <div class="ui-sub">Your turn · Roll the dice</div>
-            <div class="mini-board">
-              <b></b><b></b><b></b><b></b><b></b>
-              <b></b><b></b><b></b><b></b><b></b>
-              <b></b><b></b><b></b><b></b><b></b>
-              <b></b><b></b><b></b><b></b><b></b>
-              <b></b><b></b><b></b><b></b><b></b>
+        <div class="phone" aria-label="Kurukshetra game screen illustration" role="img">
+          <div class="screen">
+            <div class="scr-title" style="font-family:'Cinzel',serif;color:var(--kur-gold);text-align:center">Kurukshetra Patal</div>
+            <div class="kboard" id="kboard"></div>
+            <div class="kprompt">
+              <div class="ttl">🐍 Snake on 28<span>00:12</span></div>
+              <div class="use">Iron Body<small>slide only to 19</small></div>
+              <div class="cont">Continue<small>slide to 9</small></div>
             </div>
-            <div class="ui-card"><strong>You are 4 squares from a ladder.</strong><p>One roll can change the board.</p></div>
-            <div class="ui-btn">ROLL DICE</div>
-          </div></div>
+            <div class="scr-btn" style="background:#4a3a22;color:#f3e9d2;border:1px solid var(--kur-gold)">Your turn: 00:12</div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- ONEBREATH -->
-    <section class="product-section breath" id="onebreath">
-      <div class="wrap product-layout reverse">
-        <div class="showcase breath reveal" aria-label="OneBreath app mockup">
-          <div class="glow"></div>
-          <div class="show-phone side"><div class="ui green">
-            <div class="status"><span>9:41</span><span>● ● ●</span></div>
-            <div class="ui-title">Your journey</div>
-            <div class="ui-card"><strong>12 breathing days</strong><p>Keep showing up. Small sessions still count.</p></div>
-            <div class="plant-stage"><i></i><i></i><i></i></div>
-            <div class="ui-card"><strong>Seed → Sprout → Tree</strong><p>Your mindful minutes become visible progress.</p></div>
-          </div></div>
-
-          <div class="show-phone main"><div class="ui green">
-            <div class="status"><span>9:41</span><span>● ● ●</span></div>
-            <div class="ui-title">Relaxing · 4 • 7 • 8</div>
-            <div class="ui-sub">Follow the rhythm</div>
-            <div class="breath-core"><span>INHALE</span></div>
-            <div class="plant-stage"><i></i><i></i><i></i></div>
-            <div class="ui-card"><strong>Today's energy</strong><p>Each completed cycle supports your tree's growth.</p></div>
-          </div></div>
-        </div>
-
-        <div class="product-copy reveal">
-          <div class="product-kicker"><span class="dot breath"></span><span>OneBreath: Mindful Minutes</span></div>
-          <h2>Breathe.<br>Grow. Begin again.</h2>
+    <!-- ONEBREATH (content unchanged) -->
+    <section class="band breath flip" id="onebreath" aria-labelledby="br-title">
+      <div class="wrap">
+        <div class="copy">
+          <div class="app-line"><span class="sw"></span>OneBreath: Mindful Minutes</div>
+          <h2 id="br-title">Breathe. Grow. Begin again.</h2>
           <p class="tagline">Mindful breathing visualized as growth.</p>
-          <p class="desc">
-            OneBreath turns guided breathing into a living progression. The user follows a breathing rhythm,
-            interacts with the session energy, and gradually grows a digital plant or bonsai—without needing an account.
-          </p>
-
-          <div class="check-grid">
-            <div class="check">Gentle · 4 • 4 • 6</div>
-            <div class="check">Relaxing · 4 • 7 • 8</div>
-            <div class="check">Deepen · 6 • 12 • 12</div>
-            <div class="check">Yogi · 4 • 16 • 8</div>
-            <div class="check">Progress, streaks & achievements</div>
-            <div class="check">Light & dark modes</div>
-          </div>
-
-          <div class="meta-row">
-            <span>No account</span><span>No ads</span><span>No analytics</span><span>Local progress</span><span>One-time purchase</span>
-          </div>
-
-          <div class="hero-actions">
-            <a class="btn primary" href="https://play.google.com/store/apps/details?id=com.sspixels.onebreath" target="_blank" rel="noopener">
-              View on Google Play ↗
-            </a>
+          <p class="desc">OneBreath turns guided breathing into a living progression. The user follows a breathing rhythm, interacts with the session energy, and gradually grows a digital plant or bonsai, without needing an account.</p>
+          <ul class="feats">
+            <li>Gentle: 4, 4, 6</li>
+            <li>Relaxing: 4, 7, 8</li>
+            <li>Deepen: 6, 12, 12</li>
+            <li>Yogi: 4, 16, 8</li>
+            <li>Progress, streaks and achievements</li>
+            <li>Light and dark modes</li>
+          </ul>
+          <div class="facts"><span>No account</span><span>No ads</span><span>No analytics</span><span>Local progress</span><span>One-time purchase</span></div>
+          <a class="btn" href="https://play.google.com/store/apps/details?id=com.sspixels.onebreath" target="_blank" rel="noopener">View on Google Play</a>
+        </div>
+        <div class="phone" role="img" aria-label="OneBreath app screen illustration">
+          <div class="screen">
+            <div class="scr-title">Relaxing: 4, 7, 8</div>
+            <div class="scr-sub">Follow the rhythm</div>
+            <div class="orb">INHALE</div>
+            <div class="scr-card"><b>Today's energy</b>Each completed cycle supports your tree's growth.</div>
+            <div class="scr-card"><b>12 breathing days</b>Keep showing up. Small sessions still count.</div>
+            <div class="scr-btn">Begin session</div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- PARKTRACE -->
-    <section class="product-section park" id="parktrace">
-      <div class="wrap product-layout">
-        <div class="product-copy reveal">
-          <div class="product-kicker"><span class="dot park"></span><span>ParkTrace: Find Your Way</span></div>
-          <h2>Never lose the spot<br>you just found.</h2>
+    <!-- PARKTRACE (content unchanged) -->
+    <section class="band park" id="parktrace" aria-labelledby="pk-title">
+      <div class="wrap">
+        <div class="copy">
+          <div class="app-line"><span class="sw"></span>ParkTrace: Find Your Way</div>
+          <h2 id="pk-title">Never lose the spot you just found.</h2>
           <p class="tagline">Park. Save. Find your way back.</p>
-          <p class="desc">
-            ParkTrace remembers where the car is, lets the user add the details that matter,
-            then provides a visual path back with map and directional radar guidance.
-          </p>
-
-          <div class="check-grid">
-            <div class="check">One-tap GPS parking</div>
-            <div class="check">Floor, zone, row & notes</div>
-            <div class="check">Parking photo</div>
-            <div class="check">Map + radar guidance</div>
-            <div class="check">Arrival detection</div>
-            <div class="check">Parking reminders & history</div>
-          </div>
-
-          <div class="meta-row">
-            <span>No ParkTrace account</span><span>Local notes & photos</span><span>Light / Dark</span><span>One-time Premium</span>
-          </div>
+          <p class="desc">ParkTrace remembers where the car is, lets the user add the details that matter, then provides a visual path back with map and directional radar guidance.</p>
+          <ul class="feats">
+            <li>One-tap GPS parking</li>
+            <li>Floor, zone, row and notes</li>
+            <li>Parking photo</li>
+            <li>Map and radar guidance</li>
+            <li>Arrival detection</li>
+            <li>Parking reminders and history</li>
+          </ul>
+          <div class="facts"><span>No ParkTrace account</span><span>Local notes and photos</span><span>Light and dark</span><span>One-time Premium</span></div>
         </div>
-
-        <div class="showcase park reveal" aria-label="ParkTrace app mockup">
-          <div class="glow"></div>
-          <div class="show-phone side"><div class="ui park">
-            <div class="status"><span>9:41</span><span>● ● ●</span></div>
-            <div class="ui-title">Parking saved</div>
-            <div class="ui-sub">West Garage · Level 3</div>
-            <div class="ui-card"><strong>Zone B · Pillar 14</strong><p>Blue entrance, row near elevators.</p></div>
-            <div class="ui-card"><strong>Reminder</strong><p>2 hours from now</p></div>
-            <div class="ui-btn">Find my car</div>
-          </div></div>
-
-          <div class="show-phone main"><div class="ui park">
-            <div class="status"><span>9:41</span><span>● ● ●</span></div>
-            <div class="ui-title">Find My Car</div>
-            <div class="ui-sub">86 m away</div>
+        <div class="phone" role="img" aria-label="ParkTrace app screen illustration">
+          <div class="screen">
+            <div class="scr-title">Find My Car</div>
+            <div class="scr-sub">86 m away</div>
             <div class="radar"></div>
-            <div class="ui-card"><strong>Head north-east</strong><p>The radar continuously points toward your saved vehicle.</p></div>
-            <div class="ui-btn">Open map</div>
-          </div></div>
+            <div class="scr-card"><b>Head north-east</b>The radar continuously points toward your saved vehicle.</div>
+            <div class="scr-card"><b>Zone B, Pillar 14</b>Blue entrance, row near elevators.</div>
+            <div class="scr-btn">Open map</div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- PARTPAY -->
-    <section class="product-section part" id="partpay">
-      <div class="wrap product-layout reverse">
-        <div class="showcase part reveal" aria-label="PartPay app mockup">
-          <div class="glow"></div>
-          <div class="show-phone side"><div class="ui part">
-            <div class="status"><span>9:41</span><span>● ● ●</span></div>
-            <div class="ui-title">₹7,350 plan</div>
-            <div class="ui-sub">4 payment parts</div>
+    <!-- PARTPAY (content unchanged) -->
+    <section class="band part flip" id="partpay" aria-labelledby="pp-title">
+      <div class="wrap">
+        <div class="copy">
+          <div class="app-line"><span class="sw"></span>PartPay UPI: Split &amp; Pay</div>
+          <h2 id="pp-title">Split the plan. Keep the payment yours.</h2>
+          <p class="tagline">A payment planning utility, not a payment processor.</p>
+          <p class="desc">PartPay divides a larger total into sequential parts up to ₹1,999 each. It copies the current amount and opens a compatible UPI app; the user chooses the recipient, enters the UPI PIN, and completes the actual transaction entirely outside PartPay.</p>
+          <ul class="feats">
+            <li>Automatic amount splitting</li>
+            <li>Sequential locked payment parts</li>
+            <li>Installed UPI app launcher</li>
+            <li>Manual payment confirmation</li>
+            <li>Optional 12-digit UTR storage</li>
+            <li>Resume unfinished plans</li>
+          </ul>
+          <div class="facts"><span>No account</span><span>No runtime permissions</span><span>No analytics</span><span>No ads</span><span>Works offline</span></div>
+          <p class="note">PartPay cannot verify whether a transaction occurred. The user's UPI app or bank transaction history remains the authoritative record.</p>
+        </div>
+        <div class="phone" role="img" aria-label="PartPay app screen illustration">
+          <div class="screen">
+            <div class="scr-title">₹7,350 plan</div>
+            <div class="scr-sub">4 payment parts</div>
             <div class="steps">
-              <div class="step"><span>Part 1</span><strong>₹1,999 · Paid</strong></div>
-              <div class="step"><span>Part 2</span><strong>₹1,999 · Paid</strong></div>
-              <div class="step"><span>Part 3</span><strong>₹1,999</strong></div>
-              <div class="step locked"><span>Part 4</span><strong>₹1,353 · Locked</strong></div>
+              <div class="step"><span>Part 1</span><b>₹1,999 paid</b></div>
+              <div class="step"><span>Part 2</span><b>₹1,999 paid</b></div>
+              <div class="step"><span>Part 3</span><b>₹1,999</b></div>
+              <div class="step locked"><span>Part 4</span><b>₹1,353 locked</b></div>
             </div>
-          </div></div>
-
-          <div class="show-phone main"><div class="ui part">
-            <div class="status"><span>9:41</span><span>● ● ●</span></div>
-            <div class="ui-title">Current payment</div>
-            <div class="pay-progress">
-              <div class="sum"><small>Part 3 of 4</small>₹1,999</div>
-            </div>
-            <div class="ui-card"><strong>What PartPay will do</strong><p>Copy ₹1,999, show compatible UPI apps, then open the one you choose.</p></div>
-            <div class="ui-btn">Pay ₹1,999</div>
-            <div class="ui-card"><strong>You confirm the result.</strong><p>Paid · Failed / didn't pay · Not sure yet</p></div>
-          </div></div>
-        </div>
-
-        <div class="product-copy reveal">
-          <div class="product-kicker"><span class="dot part"></span><span>PartPay UPI: Split & Pay</span></div>
-          <h2>Split the plan.<br>Keep the payment yours.</h2>
-          <p class="tagline">A payment planning utility—not a payment processor.</p>
-          <p class="desc">
-            PartPay divides a larger total into sequential parts up to ₹1,999 each.
-            It copies the current amount and opens a compatible UPI app; the user chooses the recipient,
-            enters the UPI PIN, and completes the actual transaction entirely outside PartPay.
-          </p>
-
-          <div class="check-grid">
-            <div class="check">Automatic amount splitting</div>
-            <div class="check">Sequential locked payment parts</div>
-            <div class="check">Installed UPI app launcher</div>
-            <div class="check">Manual payment confirmation</div>
-            <div class="check">Optional 12-digit UTR storage</div>
-            <div class="check">Resume unfinished plans</div>
+            <div class="scr-card" style="background:rgba(255,255,255,.06)"><b>What PartPay will do</b>Copy ₹1,999, show compatible UPI apps, then open the one you choose.</div>
+            <div class="scr-card" style="background:rgba(255,255,255,.06)"><b>You confirm the result.</b>Paid, failed or not sure yet.</div>
+            <div class="scr-btn">Pay ₹1,999</div>
           </div>
-
-          <div class="meta-row">
-            <span>No account</span><span>No runtime permissions</span><span>No analytics</span><span>No ads</span><span>Works offline</span>
-          </div>
-
-          <p class="small" style="margin-top:22px">
-            PartPay cannot verify whether a transaction occurred. The user's UPI app or bank transaction history remains the authoritative record.
-          </p>
         </div>
       </div>
     </section>
 
-    <section class="section principles" id="principles">
-      <div class="wrap principle-grid">
-        <div class="reveal">
-          <span class="eyebrow">How we build</span>
-          <h2 style="margin-top:16px">Less noise.<br>More intent.</h2>
+    <section class="principles" id="principles" aria-labelledby="pr-title">
+      <div class="wrap">
+        <div class="side">
+          <h2 id="pr-title">Less noise. More intent.</h2>
           <p>Each SS Pixels product can be different in purpose, but the product principles stay consistent.</p>
         </div>
-
-        <div class="principle-list reveal">
-          <div class="principle">
-            <div class="ico">01</div>
-            <div><strong>Collect less by default.</strong><p>Use local storage where it makes sense and only request access when the feature actually needs it.</p></div>
-          </div>
-          <div class="principle">
-            <div class="ico">02</div>
-            <div><strong>Make the main action obvious.</strong><p>A good mobile interface should explain itself before the user needs a tutorial.</p></div>
-          </div>
-          <div class="principle">
-            <div class="ico">03</div>
-            <div><strong>Use platform-native strengths.</strong><p>Modern Android architecture, Jetpack Compose, Play services and system APIs where they improve the experience.</p></div>
-          </div>
-          <div class="principle">
-            <div class="ico">04</div>
-            <div><strong>Monetize without turning the app into a trap.</strong><p>Simple paid downloads or one-time premium upgrades where that model fits the product.</p></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="closing" id="contact">
-      <div class="wrap reveal">
-        <div class="logo-big">SS</div>
-        <span class="eyebrow">SS Pixels</span>
-        <h2 style="margin-top:18px">Useful software can still have <span class="grad-text">personality.</span></h2>
-        <p>
-          Independent Android apps and games designed with focus, polish and respect for the person using them.
-        </p>
-        <div class="hero-actions" style="justify-content:center;margin-top:30px">
-          <a class="btn primary" href="#work">Explore the portfolio</a>
-          <a class="btn" href="#top">Back to top ↑</a>
-        </div>
-        
+        <ul class="plist">
+          <li><span class="px" aria-hidden="true"></span><div><strong>Collect less by default.</strong><p>Use local storage where it makes sense and only request access when the feature actually needs it.</p></div></li>
+          <li><span class="px" aria-hidden="true"></span><div><strong>Make the main action obvious.</strong><p>A good mobile interface should explain itself before the user needs a tutorial.</p></div></li>
+          <li><span class="px" aria-hidden="true"></span><div><strong>Use platform-native strengths.</strong><p>Modern Android architecture, Jetpack Compose, Play services and system APIs where they improve the experience.</p></div></li>
+          <li><span class="px" aria-hidden="true"></span><div><strong>Price clearly. No traps.</strong><p>One-time purchases with clear prices, and free games kept free with ads rather than paywalls.</p></div></li>
+        </ul>
       </div>
     </section>
   </main>
 
   <footer>
-    <div class="wrap footer-row">
-      <div class="brand">
-        <span class="brandmark">SS</span>
-        <span class="brandname">SS Pixels</span>
+    <div class="wrap">
+      <div class="brandcol">
+        <span class="brand"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>SS Pixels</span>
+        <p style="margin-top:14px;max-width:26em">Independent Android apps and games designed with focus, polish and respect for the person using them.</p>
       </div>
-      <div class="footer-links">
-        <a href="#kurukshetra">Kurukshetra</a>
-        <a href="#onebreath">OneBreath</a>
-        <a href="#parktrace">ParkTrace</a>
-        <a href="#partpay">PartPay</a>
+      <div>
+        <h3>Apps</h3>
+        <ul>
+          <li><a href="#kurukshetra">Snakes &amp; Ladders: Kurukshetra</a></li>
+          <li><a href="#onebreath">OneBreath</a></li>
+          <li><a href="#parktrace">ParkTrace</a></li>
+          <li><a href="#partpay">PartPay UPI</a></li>
+        </ul>
       </div>
-      <div class="small muted">© <span id="year"></span> SS Pixels</div>
+      <div>
+        <h3>Support</h3>
+        <ul>
+          <li><a href="mailto:support.sspixels@gmail.com">support.sspixels@gmail.com</a></li>
+        </ul>
+      </div>
+      <div class="fine">© <span id="year">2026</span> SS Pixels, Maharashtra, India</div>
     </div>
   </footer>
 
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('in');
-          observer.unobserve(entry.target);
-        }
+    // Hero pixel mosaic: four quadrants in the four product colours
+    (function(){
+      var m = document.getElementById('mosaic');
+      var rows = [
+        ['k','k','k','e','b','b','b','b'],
+        ['k','k2','k','k','b','b2','b','e'],
+        ['e','k','k2','k','b','b','b2','b'],
+        ['k','k','k','k','e','b','b','b'],
+        ['p','p','p','e','u','u','u','u'],
+        ['p','p2','p','p','u','u2','u','e'],
+        ['e','p','p2','p','u','u','u2','u'],
+        ['p','p','p','p','e','u','u','u']
+      ];
+      rows.forEach(function(r, y){
+        r.forEach(function(c, x){
+          var el = document.createElement('i');
+          el.className = c;
+          el.style.animationDelay = ((x + y) * 45) + 'ms';
+          m.appendChild(el);
+        });
       });
-    }, { threshold: 0.12 });
+    })();
 
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    // Mini game board for the Kurukshetra illustration
+    (function(){
+      var b = document.getElementById('kboard');
+      var snakes = [14,28,45,64,67,71,80,93,96,98], ladders = [4,12,20,34,55,63,73];
+      for (var row = 9; row >= 0; row--) {
+        for (var col = 0; col < 10; col++) {
+          var n = row * 10 + (row % 2 === 0 ? col + 1 : 10 - col);
+          var el = document.createElement('i');
+          if (snakes.indexOf(n) > -1) el.className = n === 28 ? 'r' : 's';
+          else if (ladders.indexOf(n) > -1) el.className = 'l';
+          b.appendChild(el);
+        }
+      }
+    })();
   </script>
 </body>
 </html>
